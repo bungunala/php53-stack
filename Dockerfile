@@ -2,6 +2,11 @@ FROM debian:7
 
 ENV DEBIAN_FRONTEND=noninteractive
 
+# 🔥 Fix EOL Debian repositories
+RUN sed -i 's|http://deb.debian.org/debian|http://archive.debian.org/debian|g' /etc/apt/sources.list \
+ && sed -i 's|http://security.debian.org|http://archive.debian.org/debian-security|g' /etc/apt/sources.list \
+ && echo 'Acquire::Check-Valid-Until "false";' > /etc/apt/apt.conf.d/99no-check-valid-until
+
 RUN apt-get update && apt-get install -y \
     apache2 \
     apache2-dev \
@@ -35,11 +40,11 @@ RUN wget https://xdebug.org/files/xdebug-2.2.7.tgz \
 
 # Xdebug config
 RUN echo "zend_extension=xdebug.so" > /usr/local/lib/php.ini \
-    && echo "xdebug.remote_enable=1" >> /usr/local/lib/php.ini \
-    && echo "xdebug.remote_autostart=1" >> /usr/local/lib/php.ini \
-    && echo "xdebug.remote_port=9003" >> /usr/local/lib/php.ini \
-    && echo "xdebug.remote_host=host.docker.internal" >> /usr/local/lib/php.ini \
-    && echo "xdebug.idekey=VSCODE" >> /usr/local/lib/php.ini
+ && echo "xdebug.remote_enable=1" >> /usr/local/lib/php.ini \
+ && echo "xdebug.remote_autostart=1" >> /usr/local/lib/php.ini \
+ && echo "xdebug.remote_port=9003" >> /usr/local/lib/php.ini \
+ && echo "xdebug.remote_host=host.docker.internal" >> /usr/local/lib/php.ini \
+ && echo "xdebug.idekey=VSCODE" >> /usr/local/lib/php.ini
 
 RUN a2enmod php5
 
