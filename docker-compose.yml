@@ -1,0 +1,11 @@
+version: "3.8"
+
+services:
+  php53-debug:
+    build: .
+    container_name: php53-xdebug
+    ports:
+      - "8080:80"
+      - "9003:9003"
+    volumes:
+      - ./src:/var/www/html
